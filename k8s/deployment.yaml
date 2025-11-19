@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webserver
+  labels:
+    app: webserver
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: webserver
+  template:
+    metadata:
+      labels:
+        app: webserver
+    spec:
+      containers:
+      - name: webserver
+        image: webserver:latest
+        imagePullPolicy: Never # For local development
+        ports:
+        - containerPort: 4000
+        env:
+        - name: PORT
+          value: "4000"
+        - name: SECRET_KEY_BASE
+          value: "DUMMY_SECRET_KEY_BASE_FOR_DEV_ONLY_DO_NOT_USE_IN_PROD"
+        - name: RELEASE_COOKIE
+          value: "secret_cookie"
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP

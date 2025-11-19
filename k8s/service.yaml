@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver-headless
+  labels:
+    app: webserver
+spec:
+  clusterIP: None
+  selector:
+    app: webserver
+  ports:
+  - name: epmd
+    port: 4369
+  - name: dist
+    port: 9001 # Default distribution port range start
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webserver
+  labels:
+    app: webserver
+spec:
+  selector:
+    app: webserver
+  ports:
+  - port: 80
+    targetPort: 4000
