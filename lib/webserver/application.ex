@@ -24,6 +24,7 @@ defmodule Webserver.Application do
       Webserver.Services.NodeMonitor,
       Webserver.Services.KV,
       Webserver.Services.ChatServer,
+      Webserver.Kafka.Consumer,
       {Plug.Cowboy,
        scheme: :http, plug: Webserver.Web.Router, options: [port: 4000, dispatch: dispatch]}
     ]

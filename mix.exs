@@ -33,7 +33,8 @@ defmodule Webserver.MixProject do
       {:opentelemetry_exporter, "~> 1.8"},
       {:opentelemetry_api, "~> 1.4"},
       {:opentelemetry_cowboy, "~> 0.3"},
-      {:opentelemetry_telemetry, "~> 1.1"}
+      {:opentelemetry_telemetry, "~> 1.1"},
+      {:broadway_kafka, "~> 0.4"}
     ]
   end
 end
