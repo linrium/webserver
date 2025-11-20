@@ -1,4 +1,4 @@
-defmodule Webserver.Requests.KVRequest do
+defmodule Webserver.Schemas.KVRequest do
   use Ecto.Schema
   import Ecto.Changeset
 

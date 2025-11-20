@@ -1,4 +1,4 @@
-defmodule Webserver.NodeMonitor do
+defmodule Webserver.Services.NodeMonitor do
   use GenServer
   require Logger
 

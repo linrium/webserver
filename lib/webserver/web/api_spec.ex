@@ -1,4 +1,4 @@
-defmodule Webserver.ApiSpec do
+defmodule Webserver.Web.ApiSpec do
   @moduledoc """
   OpenAPI specification for the Webserver API.
   """
@@ -27,16 +27,16 @@ defmodule Webserver.ApiSpec do
       # Manually define paths since we're using Plug.Router, not Phoenix
       paths: %{
         "/" => %OpenApiSpex.PathItem{
-          get: Webserver.Operations.HealthCheck.operation()
+          get: Webserver.Web.Controllers.HealthController.open_api_operation(:index)
         },
         "/nodes" => %OpenApiSpex.PathItem{
-          get: Webserver.Operations.ListNodes.operation()
+          get: Webserver.Web.Controllers.NodeController.open_api_operation(:index)
         },
         "/kv" => %OpenApiSpex.PathItem{
-          post: Webserver.Operations.PutKV.operation()
+          post: Webserver.Web.Controllers.KVController.open_api_operation(:put)
         },
         "/kv/{key}" => %OpenApiSpex.PathItem{
-          get: Webserver.Operations.GetKV.operation()
+          get: Webserver.Web.Controllers.KVController.open_api_operation(:get)
         }
       }
     }

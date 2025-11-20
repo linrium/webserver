@@ -1,4 +1,4 @@
-defmodule Webserver.KV do
+defmodule Webserver.Services.KV do
   use Agent
 
   def start_link(_) do

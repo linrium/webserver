@@ -6,8 +6,8 @@ defmodule Webserver.Application do
     dispatch = [
       {:_,
        [
-         {"/ws", Webserver.SocketHandler, []},
-         {:_, Plug.Cowboy.Handler, {Webserver.Router, []}}
+         {"/ws", Webserver.Web.SocketHandler, []},
+         {:_, Plug.Cowboy.Handler, {Webserver.Web.Router, []}}
        ]}
     ]
 
@@ -17,11 +17,11 @@ defmodule Webserver.Application do
         start: {:pg, :start_link, []}
       },
       {Cluster.Supervisor, [Application.get_env(:libcluster, :topologies, [])]},
-      Webserver.NodeMonitor,
-      Webserver.KV,
-      Webserver.ChatServer,
+      Webserver.Services.NodeMonitor,
+      Webserver.Services.KV,
+      Webserver.Services.ChatServer,
       {Plug.Cowboy,
-       scheme: :http, plug: Webserver.Router, options: [port: 4000, dispatch: dispatch]}
+       scheme: :http, plug: Webserver.Web.Router, options: [port: 4000, dispatch: dispatch]}
     ]
 
     opts = [strategy: :one_for_one, name: Webserver.Supervisor]

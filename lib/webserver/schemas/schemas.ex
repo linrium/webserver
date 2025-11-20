@@ -4,12 +4,12 @@ defmodule Webserver.Schemas do
   """
   alias OpenApiSpex.Schema
 
-  defmodule KVRequest do
+  defmodule KVRequestBody do
     @moduledoc false
     require OpenApiSpex
 
     OpenApiSpex.schema(%{
-      title: "KVRequest",
+      title: "KVRequestBody",
       description: "Request body for storing a key-value pair",
       type: :object,
       properties: %{

@@ -1,4 +1,4 @@
-defmodule Webserver.SocketHandler do
+defmodule Webserver.Web.SocketHandler do
   @behaviour :cowboy_websocket
 
   def init(req, _state) do
@@ -20,7 +20,7 @@ defmodule Webserver.SocketHandler do
     :pg.join(:chat_clients, self())
 
     # Send history to the new user
-    history = Webserver.ChatServer.get_history()
+    history = Webserver.Services.ChatServer.get_history()
 
     Enum.each(history, fn msg ->
       json = Jason.encode!(msg)
@@ -32,7 +32,7 @@ defmodule Webserver.SocketHandler do
 
   def websocket_handle({:text, message}, state) do
     # Broadcast the message via ChatServer, passing our PID
-    Webserver.ChatServer.broadcast(state.username, message, self())
+    Webserver.Services.ChatServer.broadcast(state.username, message, self())
     {:ok, state}
   end
 

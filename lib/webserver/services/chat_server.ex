@@ -1,4 +1,4 @@
-defmodule Webserver.ChatServer do
+defmodule Webserver.Services.ChatServer do
   use GenServer
 
   @history_limit 50
