@@ -27,7 +27,13 @@ defmodule Webserver.MixProject do
       {:jason, "~> 1.4.4"},
       {:ecto, "~> 3.10"},
       {:open_api_spex, "~> 3.21"},
-      {:scalar_plug, "~> 0.2.0"}
+      {:scalar_plug, "~> 0.2.0"},
+      # OpenTelemetry
+      {:opentelemetry, "~> 1.5"},
+      {:opentelemetry_exporter, "~> 1.8"},
+      {:opentelemetry_api, "~> 1.4"},
+      {:opentelemetry_cowboy, "~> 0.3"},
+      {:opentelemetry_telemetry, "~> 1.1"}
     ]
   end
 end

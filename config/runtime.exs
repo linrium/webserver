@@ -40,6 +40,12 @@ if config_env() == :prod do
   # Then you can assemble a release by calling `mix release`.
   # See `mix help release` for more information.
 
+  # OpenTelemetry configuration
+  otel_endpoint = System.get_env("OTEL_EXPORTER_OTLP_ENDPOINT") || "http://localhost:4318"
+
+  config :opentelemetry_exporter,
+    otlp_endpoint: otel_endpoint
+
   topologies =
     case System.get_env("LIBCLUSTER_STRATEGY") do
       "gossip" ->

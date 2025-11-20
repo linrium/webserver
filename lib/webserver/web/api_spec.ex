@@ -2,7 +2,7 @@ defmodule Webserver.Web.ApiSpec do
   @moduledoc """
   OpenAPI specification for the Webserver API.
   """
-  alias OpenApiSpex.{Components, Info, OpenApi, Server}
+  alias OpenApiSpex.{Info, OpenApi, Server}
   @behaviour OpenApi
 
   @impl OpenApi

@@ -3,6 +3,10 @@ defmodule Webserver.Application do
   require Logger
 
   def start(_type, _args) do
+    # Setup custom telemetry handlers for OpenTelemetry
+    :opentelemetry_cowboy.setup()
+    Webserver.Telemetry.setup()
+
     dispatch = [
       {:_,
        [
