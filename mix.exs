@@ -25,7 +25,9 @@ defmodule Webserver.MixProject do
       {:plug_cowboy, "~> 2.7.5"},
       {:libcluster, "~> 3.5.0"},
       {:jason, "~> 1.4.4"},
-      {:ecto, "~> 3.10"}
+      {:ecto, "~> 3.10"},
+      {:open_api_spex, "~> 3.21"},
+      {:scalar_plug, "~> 0.2.0"}
     ]
   end
 end

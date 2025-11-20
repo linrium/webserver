@@ -2,8 +2,26 @@ defmodule Webserver.Router do
   use Plug.Router
 
   plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
+
+  # Add OpenAPI spec plug
+  plug(OpenApiSpex.Plug.PutApiSpec, module: Webserver.ApiSpec)
+
+  plug(ScalarPlug, path: "/api/docs", spec_href: "/api/openapi", title: "API Documentation")
+
   plug(:match)
   plug(:dispatch)
+
+  # Serve OpenAPI spec as JSON
+  get "/api/openapi" do
+    conn
+    |> OpenApiSpex.Plug.RenderSpec.call([])
+  end
+
+  # Serve Swagger UI
+  get "/swaggerui" do
+    conn
+    |> OpenApiSpex.Plug.SwaggerUI.call(%{path: "/api/openapi"})
+  end
 
   get "/" do
     send_resp(conn, 200, "Hello World")

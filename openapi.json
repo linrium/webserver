@@ -1,0 +1,305 @@
+{
+  "components": {
+    "responses": {},
+    "schemas": {
+      "ErrorResponse": {
+        "description": "Error response",
+        "properties": {
+          "error": {
+            "description": "Error message",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          },
+          "errors": {
+            "additionalProperties": {
+              "items": {
+                "type": "string",
+                "x-struct": null,
+                "x-validate": null
+              },
+              "type": "array",
+              "x-struct": null,
+              "x-validate": null
+            },
+            "description": "Validation errors",
+            "type": "object",
+            "x-struct": null,
+            "x-validate": null
+          }
+        },
+        "title": "ErrorResponse",
+        "type": "object",
+        "x-struct": "Elixir.Webserver.Schemas.ErrorResponse",
+        "x-validate": null
+      },
+      "KVGetResponse": {
+        "description": "Response when retrieving a value",
+        "properties": {
+          "from_node": {
+            "description": "Node where value was found",
+            "example": "webserver@127.0.0.1",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          },
+          "value": {
+            "description": "The stored value",
+            "example": "John Doe",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          }
+        },
+        "required": [
+          "value",
+          "from_node"
+        ],
+        "title": "KVGetResponse",
+        "type": "object",
+        "x-struct": "Elixir.Webserver.Schemas.KVGetResponse",
+        "x-validate": null
+      },
+      "KVRequest": {
+        "description": "Request body for storing a key-value pair",
+        "properties": {
+          "key": {
+            "description": "The key to store",
+            "example": "user:123",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          },
+          "value": {
+            "description": "The value to store",
+            "example": "John Doe",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          }
+        },
+        "required": [
+          "key",
+          "value"
+        ],
+        "title": "KVRequest",
+        "type": "object",
+        "x-struct": "Elixir.Webserver.Schemas.KVRequest",
+        "x-validate": null
+      },
+      "KVResponse": {
+        "description": "Response after storing a key-value pair",
+        "properties": {
+          "node": {
+            "description": "Node that handled the request",
+            "example": "webserver@127.0.0.1",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          },
+          "status": {
+            "description": "Operation status",
+            "example": "ok",
+            "type": "string",
+            "x-struct": null,
+            "x-validate": null
+          }
+        },
+        "required": [
+          "status",
+          "node"
+        ],
+        "title": "KVResponse",
+        "type": "object",
+        "x-struct": "Elixir.Webserver.Schemas.KVResponse",
+        "x-validate": null
+      },
+      "NodesResponse": {
+        "description": "List of nodes in the cluster",
+        "properties": {
+          "nodes": {
+            "description": "Array of node names in the cluster",
+            "example": [
+              "webserver@127.0.0.1",
+              "webserver@10.0.1.2"
+            ],
+            "items": {
+              "type": "string",
+              "x-struct": null,
+              "x-validate": null
+            },
+            "type": "array",
+            "x-struct": null,
+            "x-validate": null
+          }
+        },
+        "required": [
+          "nodes"
+        ],
+        "title": "NodesResponse",
+        "type": "object",
+        "x-struct": "Elixir.Webserver.Schemas.NodesResponse",
+        "x-validate": null
+      }
+    }
+  },
+  "info": {
+    "description": "A distributed Elixir webserver with:\n- Key-Value store distributed across cluster nodes\n- Real-time chat via WebSockets\n- Node discovery and monitoring\n",
+    "title": "Distributed Webserver API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/": {
+      "get": {
+        "callbacks": {},
+        "deprecated": false,
+        "description": "Returns a simple health check message",
+        "operationId": "HealthCheck.get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "text/plain": {
+                "example": "Hello World"
+              }
+            },
+            "description": "Success"
+          }
+        },
+        "summary": "Health check",
+        "tags": [
+          "Health"
+        ]
+      }
+    },
+    "/kv": {
+      "post": {
+        "callbacks": {},
+        "deprecated": false,
+        "description": "Stores a key-value pair in the distributed KV store",
+        "operationId": "PutKV.post",
+        "parameters": [],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/KVRequest"
+              }
+            }
+          },
+          "description": "KV pair to store",
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KVResponse"
+                }
+              }
+            },
+            "description": "Success"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Validation error"
+          }
+        },
+        "summary": "Store a key-value pair",
+        "tags": [
+          "Key-Value Store"
+        ]
+      }
+    },
+    "/kv/{key}": {
+      "get": {
+        "callbacks": {},
+        "deprecated": false,
+        "description": "Retrieves a value from the distributed KV store by searching all cluster nodes",
+        "operationId": "GetKV.get",
+        "parameters": [
+          {
+            "description": "The key to retrieve",
+            "example": "user:123",
+            "in": "path",
+            "name": "key",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "x-struct": null,
+              "x-validate": null
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/KVGetResponse"
+                }
+              }
+            },
+            "description": "Value found"
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            },
+            "description": "Key not found"
+          }
+        },
+        "summary": "Retrieve a value by key",
+        "tags": [
+          "Key-Value Store"
+        ]
+      }
+    },
+    "/nodes": {
+      "get": {
+        "callbacks": {},
+        "deprecated": false,
+        "description": "Returns a list of all nodes in the distributed cluster",
+        "operationId": "ListNodes.get",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodesResponse"
+                }
+              }
+            },
+            "description": "Nodes list"
+          }
+        },
+        "summary": "List cluster nodes",
+        "tags": [
+          "Cluster"
+        ]
+      }
+    }
+  },
+  "security": [],
+  "servers": [
+    {
+      "description": "Development server",
+      "url": "http://localhost:4000",
+      "variables": {}
+    }
+  ],
+  "tags": []
+}

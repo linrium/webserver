@@ -1,7 +1,7 @@
 defmodule Webserver.SocketHandler do
   @behaviour :cowboy_websocket
 
-  def init(req, state) do
+  def init(req, _state) do
     # Parse username from query params
     username =
       case :cowboy_req.parse_qs(req) do
